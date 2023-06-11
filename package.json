@@ -1,0 +1,18 @@
+{
+  "name": "mongoose_crud_app",
+  "version": "1.0.0",
+  "description": "mongoose CRUD appliction with express.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Naim Ahmad",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
