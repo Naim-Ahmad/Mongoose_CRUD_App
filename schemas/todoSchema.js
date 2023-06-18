@@ -15,5 +15,26 @@ const todoSchema = mongoose.Schema({
         default: Date.now
     }
 })
+// Instance method
+todoSchema.methods = {
+    activeTodo: function () { 
+        return mongoose.model('Todo', todoSchema).find({ status: 'active' });
+    }
+    
+};
+
+// static method
+todoSchema.statics = {
+    findMeet: function () {
+        return this.find({title: /meet/i})
+    }
+}
+
+// query helpers 
+todoSchema.query = {
+    byTelawat: function () {
+        return this.find({title: new RegExp('telawat', 'i')})
+    }
+}
 
 module.exports = todoSchema

@@ -1,22 +1,67 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const todoSchema = require('../schemas/todoSchema')
+const checkLogin = require('../middleware/checkLogin')
 const router = express.Router()
 const Todo = new mongoose.model("Todo", todoSchema)
 
 // GET All The Todo's
-router.get('/', async(req, res)=> {
+router.get('/', checkLogin, async(req, res)=> {
   try {
     const result = await Todo.find({}).select({
       _id: 0,
       __v: 0
-  })
+    })
+    console.log(result)
   res.status(200).json({
-    result
+    data: result
   })
   } catch(err) {
     res.status(500).json({
       error: "error"
+    })
+  }
+})
+
+// Get active todo's
+router.get('/active', async (req, res) => {
+  const todo = new Todo()
+  try {
+    const activeData = await todo.activeTodo();
+    res.status(200).json({
+      data: activeData
+    })
+  } catch (err) {
+    res.status(500).json({
+      error: err
+    })
+  }
+})
+
+// get meet todo's
+router.get('/meet', async (req, res) => {
+  try {
+    const data = await Todo.findMeet();
+    res.status(200).json({
+      data: data
+    })
+  } catch (error) {
+    res.status(500).json({
+      error
+    })
+  }
+})
+
+// query helper (chain kora jay)
+router.get('/telawat', async (req, res) => {
+  try {
+    const data = await Todo.find().byTelawat();
+    res.status(200).json({
+      data: data
+    })
+  } catch (error) {
+    res.status(500).json({
+      error: error
     })
   }
 })

@@ -1,10 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const dotenv = require('dotenv')
 const todoHandler = require('./routerHandler/todoHandler')
+const userHandler = require('./routerHandler/userHandler')
 
 // express app initialization
 const app = express()
-
+dotenv.config()
 app.use(express.json())
 
 // connection database with mongoose
@@ -14,11 +16,8 @@ mongoose.connect('mongodb://localhost/todo')
 
 // all router
 app.use('/todo', todoHandler)
+app.use('/user', userHandler)
 
-// app.post('/todo', (req, res) => {
-//     console.log(req.body)
-//     res.end()
-// })
 
 // error handling middleware
 function errorHandler(err, req, res, next) {
@@ -27,5 +26,7 @@ function errorHandler(err, req, res, next) {
     }
     res.status(500).json({error: err})
 }
+
+app.use(errorHandler)
 
 app.listen(3000, ()=> console.log('App is listening on 3000 port'))
